@@ -13,8 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dayout.R;
+import com.example.dayout.config.AppSharedPreferences;
 import com.example.dayout.helpers.view.FN;
 import com.example.dayout.helpers.view.ImageViewer;
+import com.example.dayout.helpers.view.NoteMessage;
 import com.example.dayout.models.profile.ProfileData;
 import com.example.dayout.ui.activities.MainActivity;
 import com.example.dayout.ui.fragments.profile.organizer.OrganizerProfileFragment;
@@ -128,8 +130,12 @@ public class OrganizersAdapter extends RecyclerView.Adapter<OrganizersAdapter.Vi
 
         @Override
         public void onClick(View v) {
-            ProfileData data = organizers.get(getAdapterPosition());
-            FN.addFixedNameFadeFragment(MAIN_FRC, (MainActivity) context, new OrganizerProfileFragment(data));
+            if(AppSharedPreferences.GET_ACC_TOKEN().isEmpty()) NoteMessage.showSnackBar((MainActivity)context,context.getString(R.string.presmission_deny));
+            else{
+                ProfileData data = organizers.get(getAdapterPosition());
+                FN.addFixedNameFadeFragment(MAIN_FRC, (MainActivity) context, new OrganizerProfileFragment(data));
+            }
+
         }
     }
 }

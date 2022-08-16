@@ -14,13 +14,18 @@ import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import android.util.Pair;
+
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
 import com.example.dayout.R;
-import com.example.dayout.api.ApiClient;
+
 import com.example.dayout.config.AppSharedPreferences;
 import com.example.dayout.helpers.view.FN;
 
+import com.example.dayout.helpers.view.NoteMessage;
 import com.example.dayout.models.room.organizersRoom.database.OrganizersDatabase;
 import com.example.dayout.models.room.organizersRoom.interfaces.IOrganizers;
 import com.example.dayout.models.room.popularPlaceRoom.Interfaces.IPopularPlaces;
@@ -117,9 +122,17 @@ public class MainActivity extends AppCompatActivity {
 
     private final View.OnClickListener onExploreClicked = v -> FN.addFixedNameFadeFragment(MAIN_FRC, MainActivity.this, new ExploreFragment());
 
-    private final View.OnClickListener onFavoriteClicked = v -> FN.addFixedNameFadeFragment(MAIN_FRC, MainActivity.this, new FavoritePlaceFragment());
+    private final View.OnClickListener onFavoriteClicked = v ->{
+        if(AppSharedPreferences.GET_ACC_TOKEN().isEmpty()) NoteMessage.showSnackBar(this,getString(R.string.presmission_deny));
+        else
+        FN.addFixedNameFadeFragment(MAIN_FRC, MainActivity.this, new FavoritePlaceFragment());
+    };
     private final View.OnClickListener onDrawerClicked = v -> FN.addSlideLRFragmentUpFragment(MAIN_FRC, MainActivity.this, new DrawerFragment(), "drawer");
-    private final View.OnClickListener onProfileClicked = v -> FN.addFixedNameFadeFragment(MAIN_FRC, MainActivity.this, new ProfileFragment());
+    private final View.OnClickListener onProfileClicked = v->{
+        if(AppSharedPreferences.GET_ACC_TOKEN().isEmpty()) NoteMessage.showSnackBar(this,getString(R.string.presmission_deny));
+        else
+        FN.addFixedNameFadeFragment(MAIN_FRC, MainActivity.this, new ProfileFragment());
+    };
 
     public void showBottomBar() {
         drawerButton.setEnabled(true);
@@ -187,13 +200,17 @@ public class MainActivity extends AppCompatActivity {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("mobile_token", token);
             UserViewModel.getINSTANCE().sendFirebaseToken(jsonObject);
-
-            //TODO make fire token observer and check if the process success or not
-            // UserViewModel.getINSTANCE().successfulMutableLiveData.observe(this, fireTokenObserver);
+            UserViewModel.getINSTANCE().successfulMutableLiveData.observe(this, booleanStringPair -> {
+                if (booleanStringPair == null || booleanStringPair.first == null)
+                    new Handler(getMainLooper()).postDelayed(() -> {
+                        UserViewModel.getINSTANCE().sendFirebaseToken(jsonObject);
+                    }, 2500);
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     };
+
 
 }

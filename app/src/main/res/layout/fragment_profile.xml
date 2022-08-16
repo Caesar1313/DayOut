@@ -57,14 +57,14 @@
                     android:id="@+id/profile_edit_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layoutDirection="ltr"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:background="@drawable/edit_icon"
                     android:backgroundTint="@color/off_white"
+                    android:layoutDirection="ltr"
                     app:layout_constraintBottom_toBottomOf="@+id/back_arrow_btn"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:background="@drawable/edit_icon"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <View
                     android:id="@+id/divider"

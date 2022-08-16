@@ -59,6 +59,7 @@
         android:layout_marginBottom="@dimen/_10sdp"
         android:indeterminateTint="@color/orange_500"
         android:outlineAmbientShadowColor="@color/rose_500"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

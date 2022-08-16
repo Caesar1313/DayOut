@@ -14,7 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
 import com.example.dayout.R;
+import com.example.dayout.config.AppSharedPreferences;
 import com.example.dayout.helpers.view.FN;
+import com.example.dayout.helpers.view.NoteMessage;
 import com.example.dayout.models.room.roadMapRoom.database.RoadMapDatabase;
 import com.example.dayout.models.room.tripsRoom.database.TripsDatabase;
 import com.example.dayout.models.trip.TripData;
@@ -140,8 +142,7 @@ public class OldTripDetailsFragment extends Fragment {
         for (int i = 0; i < types.size(); i++) {
             if (i != 0) {
                 tripTypes += ", " + types.get(i).name;
-            } else if (i == 0)
-                tripTypes += types.get(i).name;
+            } else tripTypes += types.get(i).name;
         }
 
         return tripTypes;
@@ -241,6 +242,11 @@ public class OldTripDetailsFragment extends Fragment {
     private final RatingBar.OnRatingBarChangeListener onRatingBarChanged = new RatingBar.OnRatingBarChangeListener() {
         @Override
         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+            if(AppSharedPreferences.GET_ACC_TOKEN().isEmpty()) {
+                NoteMessage.showSnackBar(requireActivity(),getString(R.string.presmission_deny));
+                return;
+            }
+
             if(!firstAccess) {
                 tripRating = rating;
                 rateTrip();

@@ -75,7 +75,7 @@ public class WarningDialog extends Dialog {
             loadingDialog.dismiss();
             if(booleanStringPair != null){
                 if(booleanStringPair.first != null){
-                    NoteMessage.message(context, context.getResources().getString(R.string.booking_canceled));
+                    NoteMessage.showSnackBar((MainActivity)context, context.getResources().getString(R.string.booking_canceled));
                     FN.popStack((MainActivity) context);
                 } else
                     new ErrorDialog(context, booleanStringPair.second).show();

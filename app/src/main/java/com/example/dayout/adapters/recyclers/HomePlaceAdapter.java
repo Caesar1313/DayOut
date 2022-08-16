@@ -18,6 +18,7 @@ import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.dayout.R;
+import com.example.dayout.config.AppSharedPreferences;
 import com.example.dayout.helpers.view.FN;
 import com.example.dayout.helpers.view.NoteMessage;
 import com.example.dayout.models.popualrPlace.PlaceData;
@@ -135,6 +136,11 @@ public class HomePlaceAdapter extends RecyclerView.Adapter<HomePlaceAdapter.View
         private final View.OnClickListener onAddFavoriteClicked = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (AppSharedPreferences.GET_ACC_TOKEN().isEmpty()) {
+                    NoteMessage.showSnackBar((MainActivity) context, context.getString(R.string.presmission_deny));
+                    return;
+                }
+
                 addFavoriteButton.setEnabled(false);
                 PlaceViewModel.getINSTANCE().addToFavorite(getJsonObject());
                 PlaceViewModel.getINSTANCE().successfulMutableLiveData.observe((MainActivity) context, successfulObserver);
@@ -148,9 +154,10 @@ public class HomePlaceAdapter extends RecyclerView.Adapter<HomePlaceAdapter.View
                 if (booleanStringPair != null) {
                     if (booleanStringPair.first != null && booleanStringPair.first) {
                         addFavoriteButton.setVisibility(View.GONE);
-                        NoteMessage.message(context, context.getResources().getString(R.string.added_successfully));
+                        NoteMessage.showSnackBar((MainActivity) context, context.getResources().getString(R.string.added_successfully));
                     } else new ErrorDialog(context, booleanStringPair.second).show();
-                } else new ErrorDialog(context, context.getResources().getString(R.string.error_connection)).show();
+                } else
+                    new ErrorDialog(context, context.getResources().getString(R.string.error_connection)).show();
             }
         };
 
@@ -163,14 +170,11 @@ public class HomePlaceAdapter extends RecyclerView.Adapter<HomePlaceAdapter.View
 
         @Override
         public void onClick(View v) {
-                FN.addFixedNameFadeFragment(MAIN_FRC, (MainActivity) context, new PlaceInfoFragment(list.get(getAdapterPosition()).id));
+            FN.addFixedNameFadeFragment(MAIN_FRC, (MainActivity) context, new PlaceInfoFragment(list.get(getAdapterPosition()).id));
         }
 
         private void bindImageSlider(List<PopularPlacePhoto> photos) {
             List<SlideModel> slideModels = new ArrayList<>();
-
-
-
             for (PopularPlacePhoto ph : photos) {
                 slideModels.add(new SlideModel(IMAGE_BASE_URL + ph.path
                         , ScaleTypes.FIT));

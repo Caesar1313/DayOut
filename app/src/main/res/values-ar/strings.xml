@@ -133,5 +133,8 @@
     <string name="please_enter_your_verification_code_and_new_password">ادخل رمز التأكيد وكلمة السر الجديدة</string>
     <string name="confirmation_code">رمز التأكيد</string>
     <string name="expired_date_not_selected">تاريخ الانتهاء لم يتم تحديده</string>
+    <string name="there_is_no_favorite_places">لا يوجد اماكن مفضلة</string>
+    <string name="presmission_deny">You have to login or sign up to continue</string>
+    <string name="booking_nots">أدخل أسماء الركاب الذين تحجز لهم. يرجى مراعاة تضمين اسمك إذا كنت تقوم بالحجز لنفسك أيضًا.</string>
 
 </resources>

@@ -8,9 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -50,6 +52,8 @@ public class FavoritePlaceFragment extends Fragment {
 
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.empty_text)
+    TextView emptyText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,12 +61,12 @@ public class FavoritePlaceFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_favorite_place, container, false);
         ButterKnife.bind(this, view);
         initView();
+        getDataFromApi();
         return view;
     }
 
     @Override
     public void onStart() {
-
         ((MainActivity) requireActivity()).hideBottomBar();
         super.onStart();
     }
@@ -75,12 +79,19 @@ public class FavoritePlaceFragment extends Fragment {
     }
 
     private void initView() {
+        initRc();
         swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
         arrowBack.setOnClickListener(v -> FN.popTopStack(requireActivity()));
     }
 
-    private void setAsFavorite(List<PlaceData> places){
-        for (PlaceData place : places){
+    private void  initRc(){
+        favoritePlaceRc.setLayoutManager(new LinearLayoutManager(requireContext()));
+        favoritePlaceAdapter  = new FavoritePlaceAdapter(new ArrayList<>(),requireContext());
+        favoritePlaceRc.setAdapter(favoritePlaceAdapter);
+    }
+
+    private void setAsFavorite(List<PlaceData> places) {
+        for (PlaceData place : places) {
             place.isFavorite = true;
         }
     }
@@ -93,12 +104,12 @@ public class FavoritePlaceFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<PlaceData>>() {
                     @Override
-                    public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
 
                     }
 
                     @Override
-                    public void onSuccess(@io.reactivex.annotations.NonNull List<PlaceData> data) {
+                    public void onSuccess(@NonNull List<PlaceData> data) {
                         favoritePlaceAdapter.refresh(data);
                     }
 
@@ -111,25 +122,29 @@ public class FavoritePlaceFragment extends Fragment {
 
     private void getDataFromApi() {
         PlaceViewModel.getINSTANCE().getFavoritePlaces();
-        PlaceViewModel.getINSTANCE().placeMutableLiveData.observe(requireActivity(),favoritePlaceObserver);
+        PlaceViewModel.getINSTANCE().placeMutableLiveData.observe(requireActivity(), favoritePlaceObserver);
     }
 
-    private final Observer<Pair<PlaceModel,String>> favoritePlaceObserver = new Observer<Pair<PlaceModel, String>>() {
+    private final Observer<Pair<PlaceModel, String>> favoritePlaceObserver = new Observer<Pair<PlaceModel, String>>() {
         @Override
         public void onChanged(Pair<PlaceModel, String> placeModelStringPair) {
-            if (placeModelStringPair != null){
-                if (placeModelStringPair.first != null){
-                    favoritePlaceAdapter.refresh(placeModelStringPair.first.data);
-                    setAsFavorite(placeModelStringPair.first.data);
-                }
-                else {
+            if (placeModelStringPair != null) {
+                if (placeModelStringPair.first != null) {
+                    if (placeModelStringPair.first.data.isEmpty())
+                        emptyText.setVisibility(View.VISIBLE);
+                    else {
+                        emptyText.setVisibility(View.GONE);
+                        favoritePlaceAdapter.refresh(placeModelStringPair.first.data);
+                        setAsFavorite(placeModelStringPair.first.data);
+                    }
+
+                } else {
                     getDataFromRoom();
-                    new ErrorDialog(requireContext(),placeModelStringPair.second).show();
+                    new ErrorDialog(requireContext(), placeModelStringPair.second).show();
                 }
-            }
-            else {
+            } else {
                 getDataFromRoom();
-                new ErrorDialog(requireContext(),getResources().getString(R.string.error_connection)).show();
+                new ErrorDialog(requireContext(), getResources().getString(R.string.error_connection)).show();
             }
         }
     };

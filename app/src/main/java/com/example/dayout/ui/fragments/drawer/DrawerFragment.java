@@ -18,8 +18,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
 import com.example.dayout.R;
+import com.example.dayout.config.AppSharedPreferences;
 import com.example.dayout.helpers.view.FN;
 import com.example.dayout.helpers.view.ImageViewer;
+import com.example.dayout.helpers.view.NoteMessage;
 import com.example.dayout.models.profile.ProfileData;
 import com.example.dayout.models.profile.ProfileModel;
 import com.example.dayout.models.room.profileRoom.databases.ProfileDatabase;
@@ -199,15 +201,19 @@ public class DrawerFragment extends Fragment {
         new Handler(Looper.getMainLooper()).postDelayed(() -> FN.popTopStack(requireActivity()), 200);
     };
     private final View.OnClickListener onPrivacyPolicyClicked = v -> {
-        FN.addFixedNameFadeFragment(MAIN_FRC, requireActivity(), new PrivacyPolicyFragment());
+        FN.addFixedNameFadeFragment(MAIN_FRC, requireActivity(), new PrivacyPolicyFragment(2));
     };
     private final View.OnClickListener onContactClicked = v -> {
         FN.addFixedNameFadeFragment(MAIN_FRC, requireActivity(), new ContactUsFragment());
     };
 
     private final View.OnClickListener onNotificationClicked = v -> {
-        FN.popTopStack(requireActivity());
-        FN.addFixedNameFadeFragment(MAIN_FRC, requireActivity(), new NotificationFragment());
+        if(AppSharedPreferences.GET_ACC_TOKEN().isEmpty()) NoteMessage.showSnackBar(requireActivity(),getString(R.string.presmission_deny));
+        else{
+            FN.popTopStack(requireActivity());
+            FN.addFixedNameFadeFragment(MAIN_FRC, requireActivity(), new NotificationFragment());
+        }
+
     };
 
     private final View.OnClickListener onPostClicked = v -> {
@@ -216,8 +222,12 @@ public class DrawerFragment extends Fragment {
     };
 
     private final View.OnClickListener onMyTripsClicked = view -> {
-        FN.popTopStack(requireActivity());
-        FN.addFixedNameFadeFragment(MAIN_FRC, requireActivity(), new MyTripsFragment());
+        if(AppSharedPreferences.GET_ACC_TOKEN().isEmpty()) NoteMessage.showSnackBar(requireActivity(),getString(R.string.presmission_deny));
+        else{
+            FN.popTopStack(requireActivity());
+            FN.addFixedNameFadeFragment(MAIN_FRC, requireActivity(), new MyTripsFragment());
+        }
+
     };
 
     private final View.OnClickListener onSettingClicked = v -> {

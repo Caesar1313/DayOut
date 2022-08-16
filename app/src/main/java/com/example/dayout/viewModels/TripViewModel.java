@@ -52,7 +52,7 @@ public class TripViewModel {
 
     public void getUpcomingTrips(JsonObject filterModel, int page) {
         upcomingTripsMutableLiveData = new MutableLiveData<>();
-        apiClient.getAPI().getUpcomingTrips(filterModel, page, "customer").enqueue(new Callback<TripPaginationModel>() {
+        apiClient.getAPI().getUpcomingTrips(filterModel, page).enqueue(new Callback<TripPaginationModel>() {
             @Override
             public void onResponse(Call<TripPaginationModel> call, Response<TripPaginationModel> response) {
                 if (response.isSuccessful()) {
@@ -75,7 +75,7 @@ public class TripViewModel {
 
     public void getActiveTrips(JsonObject filterModel, int page) {
         activeTripsMutableLiveData = new MutableLiveData<>();
-        apiClient.getAPI().getActiveTrips(filterModel, page,"customer").enqueue(new Callback<TripPaginationModel>() {
+        apiClient.getAPI().getActiveTrips(filterModel, page).enqueue(new Callback<TripPaginationModel>() {
             @Override
             public void onResponse(Call<TripPaginationModel> call, Response<TripPaginationModel> response) {
                 if (response.isSuccessful()) {
@@ -98,7 +98,7 @@ public class TripViewModel {
 
     public void getHistoryTrips(JsonObject filterModel, int page) {
         historyTripsMutableLiveData = new MutableLiveData<>();
-        apiClient.getAPI().getHistoryTrips(filterModel, page, "customer").enqueue(new Callback<TripPaginationModel>() {
+        apiClient.getAPI().getHistoryTrips(filterModel, page).enqueue(new Callback<TripPaginationModel>() {
             @Override
             public void onResponse(Call<TripPaginationModel> call, Response<TripPaginationModel> response) {
                 if (response.isSuccessful()) {

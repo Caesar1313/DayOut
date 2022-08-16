@@ -14,12 +14,14 @@ import com.example.dayout.R;
 import com.example.dayout.helpers.view.FN;
 import com.example.dayout.helpers.view.NoteMessage;
 import com.example.dayout.ui.activities.MainActivity;
+import com.example.dayout.ui.fragments.drawer.PrivacyPolicyFragment;
 import com.example.dayout.ui.fragments.drawer.SettingsFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.example.dayout.config.AppConstants.AUTH_FRC;
+import static com.example.dayout.config.AppConstants.MAIN_FRC;
 
 
 public class AuthFragment extends Fragment {
@@ -65,7 +67,7 @@ public class AuthFragment extends Fragment {
 
     private final View.OnClickListener onSignUpClicked = v -> FN.addFixedNameFadeFragment(AUTH_FRC, requireActivity(), new SignUpFragment());
 
-    private final View.OnClickListener onPrivacyPolicyClicked = v -> NoteMessage.showSnackBar(requireActivity(), getResources().getString(R.string.no_policy));
+    private final View.OnClickListener onPrivacyPolicyClicked = v -> FN.addFixedNameFadeFragment(AUTH_FRC, requireActivity(), new PrivacyPolicyFragment(1));
 
     private void openMainActivity() {
         requireActivity().startActivity(new Intent(requireActivity(), MainActivity.class));

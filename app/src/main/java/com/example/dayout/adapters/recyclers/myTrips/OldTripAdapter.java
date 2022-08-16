@@ -13,7 +13,9 @@ import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.dayout.R;
+import com.example.dayout.config.AppSharedPreferences;
 import com.example.dayout.helpers.view.FN;
+import com.example.dayout.helpers.view.NoteMessage;
 import com.example.dayout.models.trip.TripData;
 import com.example.dayout.models.trip.TripPhotoData;
 import com.example.dayout.ui.activities.MainActivity;
@@ -111,6 +113,7 @@ public class OldTripAdapter extends RecyclerView.Adapter<OldTripAdapter.ViewHold
 
         @Override
         public void onClick(View v) {
+
             if (!FilterFragment.isFilterOpen) {
                 TripData data = list.get(getAdapterPosition());
                 data.stopsToDetails = stops;

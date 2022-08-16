@@ -96,10 +96,10 @@ public class ExplorePlaceAdapter extends RecyclerView.Adapter<ExplorePlaceAdapte
         }
 
         private void bindImageSlider(List<PopularPlacePhoto> photos) {
+
+            if (photos == null) return;
+
             List<SlideModel> slideModels = new ArrayList<>();
-
-
-
             for (PopularPlacePhoto ph : photos) {
                 slideModels.add(new SlideModel(IMAGE_BASE_URL + ph.path
                         , ScaleTypes.FIT));

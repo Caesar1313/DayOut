@@ -97,7 +97,7 @@ public class ReportDialog extends Dialog {
             loadingDialog.dismiss();
             if (booleanStringPair != null) {
                 if (booleanStringPair.first != null) {
-                    NoteMessage.message(getContext(), getContext().getResources().getString(R.string.reported) + " " + customerName);
+                    NoteMessage.showSnackBar((MainActivity)context, getContext().getResources().getString(R.string.reported) + " " + customerName);
                     dismiss();
                 } else
                     new ErrorDialog(getContext(), booleanStringPair.second).show();

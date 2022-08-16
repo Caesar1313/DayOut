@@ -134,7 +134,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/acme"
             android:layout_marginStart="@dimen/_10sdp"
-            android:text="0991423014"
+            android:text="0981289706"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp" />
     </LinearLayout>

@@ -185,6 +185,7 @@
                 <RadioGroup
                     android:id="@+id/sign_up_radio_group"
                     android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginEnd="@dimen/_8sdp"

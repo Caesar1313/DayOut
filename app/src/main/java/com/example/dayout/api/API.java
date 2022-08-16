@@ -108,13 +108,13 @@ public interface API {
     Call<SearchPlaceModel> searchForPlace(@Body JsonObject searchPlaceObj, @Query("page") int page);
 
     @POST("api/trip/upcoming/customer")
-    Call<TripPaginationModel> getUpcomingTrips(@Body JsonObject filterModel, @Query("page") int page, @Query("type") String type);
+    Call<TripPaginationModel> getUpcomingTrips(@Body JsonObject filterModel, @Query("page") int page);
 
     @POST("api/trip/active/customer")
-    Call<TripPaginationModel> getActiveTrips(@Body JsonObject filterModel, @Query("page") int page, @Query("type") String type);
+    Call<TripPaginationModel> getActiveTrips(@Body JsonObject filterModel, @Query("page") int page);
 
     @POST("api/trip/history/customer")
-    Call<TripPaginationModel> getHistoryTrips(@Body JsonObject filterModel, @Query("page") int page, @Query("type") String type);
+    Call<TripPaginationModel> getHistoryTrips(@Body JsonObject filterModel, @Query("page") int page);
 
     @POST("api/user/password/request")
     Call<ResponseBody> checkPhoneNumberExist(@Body JsonObject phoneNumber);

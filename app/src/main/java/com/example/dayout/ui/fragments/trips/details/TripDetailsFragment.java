@@ -14,10 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
 import com.example.dayout.R;
+import com.example.dayout.config.AppSharedPreferences;
 import com.example.dayout.helpers.view.FN;
+import com.example.dayout.helpers.view.NoteMessage;
+import com.example.dayout.models.popualrPlace.PlaceData;
 import com.example.dayout.models.room.tripsRoom.database.TripsDatabase;
 import com.example.dayout.models.trip.TripData;
 import com.example.dayout.models.trip.TripDetailsModel;
+import com.example.dayout.models.trip.place.PlaceTripData;
 import com.example.dayout.models.trip.tripType.TripType;
 import com.example.dayout.ui.dialogs.notify.ErrorDialog;
 import com.example.dayout.ui.dialogs.notify.LoadingDialog;
@@ -132,7 +136,7 @@ public class TripDetailsFragment extends Fragment {
         tripDetailsType.setText(getTypes(model.data.types));
         tripDetailsTitle.setText(model.data.title);
         tripDetailsDate.setText(model.data.begin_date);
-        tripDetailsStops.setText(model.data.stopsToDetails);
+       tripDetailsStops.setText(getTripStops(model));
         tripDetailsExpireDate.setText(model.data.expire_date);
         tripDetailsPrice.setText(String.valueOf(model.data.price));
         tripsEndBookingDate.setText(model.data.end_booking);
@@ -143,6 +147,14 @@ public class TripDetailsFragment extends Fragment {
         if(model.data.is_in_trip){
             bookTripButton.setText(R.string.cancel_booking);
         }
+    }
+
+    private String getTripStops(TripDetailsModel model){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(PlaceTripData place :model.data.place_trips)
+            stringBuilder.append(place.place.name);
+
+        return stringBuilder.toString();
     }
 
     private void setRoomData(TripData data) {
@@ -231,6 +243,7 @@ public class TripDetailsFragment extends Fragment {
     private final View.OnClickListener onRoadMapClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
             FN.addFixedNameFadeFragment(MAIN_FRC,requireActivity(),new RoadMapFragment(data.id));
         }
     };
@@ -238,8 +251,13 @@ public class TripDetailsFragment extends Fragment {
     private final View.OnClickListener onBookClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if(AppSharedPreferences.GET_ACC_TOKEN().isEmpty()){
+                NoteMessage.showSnackBar(requireActivity(),getString(R.string.presmission_deny));
+                return;
+            }
+
             if (bookTripButton.getText().toString().equals(getResources().getString(R.string.book_trip))) {
-                new MessageDialog(requireContext(), "Enter names of passengers you are booking for. Please consider including your name if you are booking for yourself as well.").show();
+                new MessageDialog(requireContext(), getString(R.string.booking_nots)).show();
                 FN.addFixedNameFadeFragment(MAIN_FRC, requireActivity(), new BookTripFragment(data.id));
             } else if (bookTripButton.getText().toString().equals(getResources().getString(R.string.cancel_booking))){
                 new WarningDialog(requireContext(), getResources().getString(R.string.canceling_reservation), true, data.id).show();

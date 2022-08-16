@@ -101,54 +101,7 @@ public class OrganizerProfileFragment extends Fragment {
         reportButton.setOnClickListener(onReportClicked);
     }
 
-    // this code is from dayout - organizer.
-//    private void getDataFromRoom(){
-//        ProfileDatabase.getINSTANCE(requireContext())
-//                .iProfileModel()
-//                .getProfile(GET_USER_ID())
-//                .subscribeOn(Schedulers.computation())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new SingleObserver<ProfileData>() {
-//                    @Override
-//                    public void onSubscribe(@NonNull Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(@NonNull ProfileData profileData) {
-//                        setData(profileData);
-//                    }
-//
-//                    @Override
-//                    public void onError(@NonNull Throwable e) {
-//
-//                    }
-//                });
-//    }
 
-//    private void getDataFromAPI() {
-//        UserViewModel.getINSTANCE().getOrganizerProfile(GET_USER_ID());
-//        UserViewModel.getINSTANCE().profileMutableLiveData.observe(requireActivity(), profileObserver);
-//    }
-
-//    private final Observer<Pair<ProfileModel, String>> profileObserver = new Observer<Pair<ProfileModel, String>>() {
-//        @Override
-//        public void onChanged(Pair<ProfileModel, String> profileModelStringPair) {
-//            loadingDialog.dismiss();
-//            if (profileModelStringPair != null) {
-//                if (profileModelStringPair.first != null) {
-//                    setData(profileModelStringPair.first.data);
-//                    profileModel = profileModelStringPair.first;
-//                } else {
-//                    getDataFromRoom();
-//                    new ErrorDialog(requireContext(), profileModelStringPair.second).show();
-//                }
-//            } else {
-//                getDataFromRoom();
-//                new ErrorDialog(requireContext(), "Error Connection").show();
-//            }
-//        }
-//    };
 
     private void setData() {
         setName(data.user.first_name, data.user.last_name);
@@ -171,13 +124,12 @@ public class OrganizerProfileFragment extends Fragment {
     private void setFollowButtonText(){
         if(data.iFollowHim){
             followButton.setText(R.string.unfollow);
-        } else if(!data.iFollowHim){
+        } else {
             followButton.setText(R.string.follow);
         }
     }
 
     private void downloadUserImage(String url) {
-
         ImageViewer.downloadCircleImage(requireContext(), profileImage, R.drawable.profile_place_holder, IMAGE_BASE_URL + url);
     }
 
@@ -223,12 +175,12 @@ public class OrganizerProfileFragment extends Fragment {
         public void onChanged(Pair<Boolean, String> booleanStringPair) {
             if (booleanStringPair != null){
                 if (booleanStringPair.first != null){
-                    if(followButton.getText().toString() == getResources().getString(R.string.follow)){
-                        NoteMessage.message(requireContext(), getResources().getString(R.string.you_are_following) + " " + data.user.first_name + " " + data.user.last_name);
+                    if(followButton.getText().toString().equals(getResources().getString(R.string.follow))){
+                        NoteMessage.showSnackBar(requireActivity(), getResources().getString(R.string.you_are_following) + " " + data.user.first_name + " " + data.user.last_name);
                         profileFollowersCount.setText(String.valueOf(increaseFollowers()));
                         followButton.setText(R.string.unfollow);
-                    } else if(followButton.getText().toString() == getResources().getString(R.string.unfollow)){
-                        NoteMessage.message(requireContext(), getResources().getString(R.string.unfollowed));
+                    } else if(followButton.getText().toString().equals(getResources().getString(R.string.unfollow))){
+                        NoteMessage.showSnackBar(requireActivity(), getResources().getString(R.string.unfollowed));
                         profileFollowersCount.setText(String.valueOf(decreaseFollowers()));
                         followButton.setText(R.string.follow);
                     }

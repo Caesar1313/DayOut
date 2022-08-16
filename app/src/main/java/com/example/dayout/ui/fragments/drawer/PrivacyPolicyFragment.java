@@ -35,6 +35,10 @@ public class PrivacyPolicyFragment extends Fragment {
     InputStream inputStream;
     BufferedReader reader;
 
+    int type;
+    public PrivacyPolicyFragment(int type){
+        this.type = type;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,7 +54,7 @@ public class PrivacyPolicyFragment extends Fragment {
 
     @Override
     public void onStart() {
-        ((MainActivity)requireActivity()).hideDrawerButton();
+if (type == 2)
         ((MainActivity)requireActivity()).hideBottomBar();
         super.onStart();
     }

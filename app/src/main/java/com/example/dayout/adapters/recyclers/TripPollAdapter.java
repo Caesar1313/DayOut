@@ -13,7 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dayout.R;
+import com.example.dayout.config.AppSharedPreferences;
 import com.example.dayout.helpers.view.FN;
+import com.example.dayout.helpers.view.NoteMessage;
 import com.example.dayout.models.poll.PollsData;
 import com.example.dayout.models.room.pollsRoom.databases.PollsDatabase;
 import com.example.dayout.ui.activities.MainActivity;
@@ -43,7 +45,6 @@ public class TripPollAdapter extends RecyclerView.Adapter<TripPollAdapter.ViewHo
         this.list = list;
         notifyDataSetChanged();
     }
-
 
 
     @NonNull
@@ -109,7 +110,10 @@ public class TripPollAdapter extends RecyclerView.Adapter<TripPollAdapter.ViewHo
         }
 
         private void openVoteFragment() {
-            FN.addFixedNameFadeFragment(MAIN_FRC,(MainActivity)context,new PollsChoicesFragment(list.get(getAdapterPosition())));
+            if (AppSharedPreferences.GET_ACC_TOKEN().isEmpty())
+                NoteMessage.showSnackBar((MainActivity) context, context.getString(R.string.presmission_deny));
+            else
+                FN.addFixedNameFadeFragment(MAIN_FRC, (MainActivity) context, new PollsChoicesFragment(list.get(getAdapterPosition())));
         }
     }
 }

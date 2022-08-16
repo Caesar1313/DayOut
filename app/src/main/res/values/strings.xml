@@ -140,5 +140,8 @@
     <string name="please_enter_your_verification_code_and_new_password">Please enter your verification code and new password</string>
     <string name="confirmation_code">Confirmation code</string>
     <string name="expired_date_not_selected">Expired Date not selected</string>
+    <string name="there_is_no_favorite_places">There is no Favorite places</string>
+    <string name="presmission_deny">You have to login or sign up to continue</string>
+    <string name="booking_nots">Enter names of passengers you are booking for. Please consider including your name if you are booking for yourself as well.</string>
 
 </resources>
